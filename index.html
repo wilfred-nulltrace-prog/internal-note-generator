@@ -85,18 +85,19 @@
       font-size: 15px;
       font-weight: bold;
       margin-right: 10px;
+      transition: 0.2s ease;
     }
 
     button:hover {
-      background: #1e4fc7;
+      opacity: 0.9;
     }
 
     .copy-btn {
       background: #16a34a;
     }
 
-    .copy-btn:hover {
-      background: #15803d;
+    .reset-btn {
+      background: #dc2626;
     }
 
     .output {
@@ -143,37 +144,37 @@
 
   <div class="container">
 
-<!-- HEADER -->
-<div style="
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:16px;
-  margin-bottom:35px;
-">
+    <!-- HEADER -->
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      margin-bottom:35px;
+    ">
 
-  <img 
-    src="https://cdn-icons-png.flaticon.com/512/3094/3094863.png"
-    alt="Clipboard Logo"
-    style="
-      width:72px;
-      height:72px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-    "
-  >
+      <img 
+        src="https://cdn-icons-png.flaticon.com/512/3094/3094863.png"
+        alt="Clipboard Logo"
+        style="
+          width:72px;
+          height:72px;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        "
+      >
 
-  <h1 style="
-    margin:0;
-    font-size:32px;
-    font-weight:700;
-    letter-spacing:-1px;
-    color:#1f2937;
-    white-space:nowrap;
-  ">
-    Internal Note Generator
-  </h1>
+      <h1 style="
+        margin:0;
+        font-size:32px;
+        font-weight:700;
+        letter-spacing:-1px;
+        color:#1f2937;
+        white-space:nowrap;
+      ">
+        Internal Note Generator
+      </h1>
 
-</div>
+    </div>
 
     <!-- APPROVED -->
     <div class="section">
@@ -196,35 +197,35 @@
     <hr>
 
     <!-- OPTIONAL ENTRY -->
-    <h3>Optional Additional Entry</h3>
+<h3>Optional Additional Entry</h3>
 
-    <div class="section">
+<div class="section">
 
-      <div class="top-row">
+  <div style="display:flex; gap:10px; margin-bottom:10px;">
 
-        <div>
-          <label>Date (MM/DD)</label>
-          <input type="text" id="extraDate" placeholder="05/19">
-        </div>
-
-        <div>
-          <label>Ticket Number</label>
-          <input type="text" id="extraTicket" placeholder="Enter ticket number here">
-        </div>
-
-        <div>
-          <label>Initial</label>
-          <input type="text" id="extraInitial" placeholder="Enter initial here">
-        </div>
-
-      </div>
-
-      <div>
-        <label>Note</label>
-        <input type="text" id="extraNote" placeholder="Enter note">
-      </div>
-
+    <div style="flex:1;">
+      <label>Date</label>
+      <input type="text" id="extraDate" placeholder="05/19">
     </div>
+
+    <div style="flex:2;">
+      <label>Ticket Number</label>
+      <input type="text" id="extraTicket" placeholder="Enter ticket number here">
+    </div>
+
+    <div style="flex:1;">
+      <label>Initial</label>
+      <input type="text" id="extraInitial" placeholder="Enter initial here">
+    </div>
+
+  </div>
+
+  <div>
+    <label>Note</label>
+    <input type="text" id="extraNote" placeholder="Enter note">
+  </div>
+
+</div>
 
     <hr>
 
@@ -291,7 +292,14 @@
 
     <!-- BUTTONS -->
     <button onclick="generateNote()">Generate</button>
-    <button class="copy-btn" onclick="copyNote()">Copy</button>
+
+    <button class="copy-btn" onclick="copyNote()">
+      Copy
+    </button>
+
+    <button class="reset-btn" onclick="resetForm()">
+      Reset
+    </button>
 
     <!-- OUTPUT -->
     <div class="output" id="output"></div>
@@ -487,6 +495,49 @@ Reason if No:${globalReason ? ` ${globalReason}` : ""}
       }
 
       navigator.clipboard.writeText(output);
+
+    }
+
+    // RESET
+    function resetForm() {
+
+      const confirmReset = confirm(
+        "Are you sure you want to clear everything?"
+      );
+
+      if (!confirmReset) {
+        return;
+      }
+
+      // CLEAR TEXTAREAS
+      document.getElementById("approved").value = "";
+      document.getElementById("rejected").value = "";
+      document.getElementById("notes").value = "";
+
+      // CLEAR OPTIONAL FIELDS
+      document.getElementById("extraDate").value = "";
+      document.getElementById("extraTicket").value = "";
+      document.getElementById("extraInitial").value = "";
+      document.getElementById("extraNote").value = "";
+
+      // CLEAR REASON
+      document.getElementById("globalReason").value = "";
+
+      // CLEAR OUTPUT
+      document.getElementById("output").innerHTML = "";
+
+      // UNCHECK RADIOS
+      const radios =
+        document.querySelectorAll('input[type="radio"]');
+
+      radios.forEach(radio => {
+
+        radio.checked = false;
+
+      });
+
+      // HIDE REASON BOX
+      document.getElementById("globalReasonBox").style.display = "none";
 
     }
 

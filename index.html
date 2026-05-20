@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internal Note Generator</title>
+
+  <style>
+
+    body {
+      background: #f3ede3;
+      font-family: Arial, sans-serif;
+      color: #2d2d2d;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #f3ede3;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cfcfcf;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 70px;
+    }
+
+    hr {
+      border: none;
+      border-top: 4px solid #8f8f8f;
+      margin: 30px 0;
+    }
+
+    .checkpoint {
+      margin-bottom: 24px;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 8px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+    }
+
+    .reason-box {
+      margin-top: 20px;
+      display: none;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background: #1e4fc7;
+    }
+
+    .copy-btn {
+      background: #16a34a;
+    }
+
+    .copy-btn:hover {
+      background: #15803d;
+    }
+
+    .output {
+      margin-top: 35px;
+      background: #f7f3eb;
+      border: 1px solid #b0b0b0;
+      padding: 22px;
+      line-height: 1.55;
+      border-radius: 8px;
+      font-size: 15px;
+      white-space: pre-line;
+    }
+
+    .top-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .top-row > div:nth-child(1) {
+      flex: 1;
+    }
+
+    .top-row > div:nth-child(2) {
+      flex: 2;
+    }
+
+    .top-row > div:nth-child(3) {
+      flex: 1;
+    }
+
+    @media (max-width: 768px) {
+
+      .top-row {
+        flex-direction: column;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+<!-- HEADER -->
+<div style="
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-bottom:35px;
+">
+
+  <img 
+    src="https://cdn-icons-png.flaticon.com/512/3094/3094863.png"
+    alt="Clipboard Logo"
+    style="
+      width:72px;
+      height:72px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+    "
+  >
+
+  <h1 style="
+    margin:0;
+    font-size:32px;
+    font-weight:700;
+    letter-spacing:-1px;
+    color:#1f2937;
+    white-space:nowrap;
+  ">
+    Internal Note Generator
+  </h1>
+
+</div>
+
+    <!-- APPROVED -->
+    <div class="section">
+      <label>Approved and Uploaded</label>
+      <textarea id="approved"></textarea>
+    </div>
+
+    <!-- REJECTED -->
+    <div class="section">
+      <label>Rejected</label>
+      <textarea id="rejected"></textarea>
+    </div>
+
+    <!-- ADDITIONAL NOTES -->
+    <div class="section">
+      <label>Additional Notes</label>
+      <textarea id="notes"></textarea>
+    </div>
+
+    <hr>
+
+    <!-- OPTIONAL ENTRY -->
+    <h3>Optional Additional Entry</h3>
+
+    <div class="section">
+
+      <div class="top-row">
+
+        <div>
+          <label>Date (MM/DD)</label>
+          <input type="text" id="extraDate" placeholder="05/19">
+        </div>
+
+        <div>
+          <label>Ticket Number</label>
+          <input type="text" id="extraTicket" placeholder="Enter ticket number here">
+        </div>
+
+        <div>
+          <label>Initial</label>
+          <input type="text" id="extraInitial" placeholder="Enter initial here">
+        </div>
+
+      </div>
+
+      <div>
+        <label>Note</label>
+        <input type="text" id="extraNote" placeholder="Enter note">
+      </div>
+
+    </div>
+
+    <hr>
+
+    <!-- CHECKPOINTS -->
+    <h3>Checkpoints</h3>
+
+    <div class="checkpoint">
+
+      <label>Email Activity Logged In the App?</label>
+
+      <div class="radio-group">
+        <label><input type="radio" name="emailActivity" value="Yes"> Yes</label>
+        <label><input type="radio" name="emailActivity" value="No"> No</label>
+        <label><input type="radio" name="emailActivity" value="NA"> NA</label>
+      </div>
+
+    </div>
+
+    <div class="checkpoint">
+
+      <label>PII Masked (Depends on the SOP)?</label>
+
+      <div class="radio-group">
+        <label><input type="radio" name="piiMasked" value="Yes"> Yes</label>
+        <label><input type="radio" name="piiMasked" value="No"> No</label>
+        <label><input type="radio" name="piiMasked" value="NA"> NA</label>
+      </div>
+
+    </div>
+
+    <div class="checkpoint">
+
+      <label>All required Docs Validated?</label>
+
+      <div class="radio-group">
+        <label><input type="radio" name="docsValidated" value="Yes"> Yes</label>
+        <label><input type="radio" name="docsValidated" value="No"> No</label>
+        <label><input type="radio" name="docsValidated" value="NA"> NA</label>
+      </div>
+
+    </div>
+
+    <div class="checkpoint">
+
+      <label>License Manager Fields Updated and Complete?</label>
+
+      <div class="radio-group">
+        <label><input type="radio" name="licenseManager" value="Yes"> Yes</label>
+        <label><input type="radio" name="licenseManager" value="No"> No</label>
+        <label><input type="radio" name="licenseManager" value="NA"> NA</label>
+      </div>
+
+    </div>
+
+    <!-- GLOBAL REASON -->
+    <div class="reason-box" id="globalReasonBox">
+
+      <label>Reason if No</label>
+      <input type="text" id="globalReason" placeholder="Enter reason here">
+
+    </div>
+
+    <hr>
+
+    <!-- BUTTONS -->
+    <button onclick="generateNote()">Generate</button>
+    <button class="copy-btn" onclick="copyNote()">Copy</button>
+
+    <!-- OUTPUT -->
+    <div class="output" id="output"></div>
+
+  </div>
+
+  <script>
+
+    const checkpointGroups = [
+      "emailActivity",
+      "piiMasked",
+      "docsValidated",
+      "licenseManager"
+    ];
+
+    const reasonBox = document.getElementById("globalReasonBox");
+
+    // SHOW GLOBAL REASON BOX
+    checkpointGroups.forEach(group => {
+
+      const radios = document.querySelectorAll(`input[name="${group}"]`);
+
+      radios.forEach(radio => {
+
+        radio.addEventListener("change", checkForNoSelections);
+
+      });
+
+    });
+
+    function checkForNoSelections() {
+
+      let hasNo = false;
+
+      checkpointGroups.forEach(group => {
+
+        const selected =
+          document.querySelector(`input[name="${group}"]:checked`);
+
+        if (selected && selected.value === "No") {
+          hasNo = true;
+        }
+
+      });
+
+      reasonBox.style.display = hasNo ? "block" : "none";
+
+    }
+
+    function getRadioValue(name) {
+
+      const selected =
+        document.querySelector(`input[name="${name}"]:checked`);
+
+      return selected ? selected.value : null;
+
+    }
+
+    function getColor(value) {
+
+      if (value === "Yes") return "#0f9d58";
+      if (value === "No") return "#d93025";
+      return "#555";
+
+    }
+
+    function generateNote() {
+
+      const emailActivity = getRadioValue("emailActivity");
+      const piiMasked = getRadioValue("piiMasked");
+      const docsValidated = getRadioValue("docsValidated");
+      const licenseManager = getRadioValue("licenseManager");
+
+      // REQUIRED CHECKPOINTS
+      if (
+        !emailActivity ||
+        !piiMasked ||
+        !docsValidated ||
+        !licenseManager
+      ) {
+        return;
+      }
+
+      // CHECK IF ANY NO
+      const hasNo =
+        emailActivity === "No" ||
+        piiMasked === "No" ||
+        docsValidated === "No" ||
+        licenseManager === "No";
+
+      const globalReason =
+        document.getElementById("globalReason").value.trim();
+
+      // REQUIRE REASON
+      if (hasNo && !globalReason) {
+        return;
+      }
+
+      // MAIN FIELDS
+      let approved =
+        document.getElementById("approved").value.trim();
+
+      let rejected =
+        document.getElementById("rejected").value.trim();
+
+      let notes =
+        document.getElementById("notes").value.trim();
+
+      // AUTO N/A
+      if (approved === "") approved = "n/a";
+      if (rejected === "") rejected = "n/a";
+
+      // OPTIONAL ENTRY
+      let extraDate =
+        document.getElementById("extraDate").value.trim();
+
+      // AUTO PST DATE
+      if (!extraDate) {
+
+        const todayPST =
+          new Date().toLocaleDateString("en-US", {
+            timeZone: "America/Los_Angeles",
+            month: "2-digit",
+            day: "2-digit"
+          });
+
+        extraDate = todayPST;
+
+      }
+
+      const extraNote =
+        document.getElementById("extraNote").value.trim();
+
+      const extraTicket =
+        document.getElementById("extraTicket").value.trim();
+
+      const extraInitial =
+        document.getElementById("extraInitial").value.trim();
+
+      // ADD EXTRA ENTRY
+      if (
+        extraNote ||
+        extraTicket ||
+        extraInitial
+      ) {
+
+        const extraEntry =
+`${extraDate} - ${extraNote} - ${extraTicket} - ${extraInitial}`;
+
+        if (notes) {
+          notes += `<br><br>${extraEntry}`;
+        } else {
+          notes = `<br>${extraEntry}`;
+        }
+
+      }
+
+      // FINAL NOTE
+      const finalNote =
+`Approved and uploaded: ${approved.toLowerCase()}
+Rejected: ${rejected.toLowerCase()}
+Additional Notes:${notes ? notes : ""}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<span style="color:#e14b2c;font-weight:bold;">— Checkpoints <i>before</i> you <u>Solve!</u> —</span>
+Email Activity Logged In the App?: <span style="color:${getColor(emailActivity)};">${emailActivity}</span>
+PII Masked (Depends on the SOP)?: <span style="color:${getColor(piiMasked)};">${piiMasked}</span>
+All required Docs Validated?: <span style="color:${getColor(docsValidated)};">${docsValidated}</span>
+License Manager Fields Updated and Complete? <span style="color:${getColor(licenseManager)};">${licenseManager}</span>
+Reason if No:${globalReason ? ` ${globalReason}` : ""}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+<b>Workflows:</b>
+1. Please check the Specialist's <span style="color:#1a73e8;">Workflow</span> for efficient ticket handling.
+2. Please check the <span style="color:#d93025;">SME's</span> <span style="color:#1a73e8;">Workflow</span> for efficient ticket handling.
+
+⚠️ <i>I understand that failure to meet any of these requirements will lead to a <b>Markdown</b> or an <u>Autofail</u> on my QA Scores.</i>`;
+
+      document.getElementById("output").innerHTML = finalNote;
+
+    }
+
+    // COPY
+    function copyNote() {
+
+      const output =
+        document.getElementById("output").innerText;
+
+      if (!output.trim()) {
+        return;
+      }
+
+      navigator.clipboard.writeText(output);
+
+    }
+
+  </script>
+
+</body>
+</html>
